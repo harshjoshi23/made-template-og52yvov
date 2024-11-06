@@ -1,0 +1,65 @@
+// Define custom value types and constraints
+valuetype coordinate oftype text {
+    constraints: [GeoFormat];
+}
+
+constraint GeoFormat oftype RegexConstraint {
+
+    // Geo-coordinate val
+    regex: /^\d{1,3}\.\d+,\s*\d{1,3}\.\d+$/; 
+}
+
+valuetype vogelsangInit oftype text {
+    constraints: [VogelsangConstraint];
+}
+
+constraint VogelsangConstraint oftype RegexConstraint {
+
+    // matching text starts with Vogelsang
+    regex: /^Vogelsang.*$/; 
+}
+
+// Define the data processing pipeline
+pipeline TreesPipeline {
+    TreesExtractor
+        -> TreesTextFileInterpreter
+        -> TreesCSVInterpreter
+        -> TreesTableInterpreter
+        -> TreesLoader;
+
+    block TreesExtractor oftype HttpExtractor {
+        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+    }
+
+    block TreesTextFileInterpreter oftype TextFileInterpreter {
+        // binary to a txt file
+    }
+
+    block TreesCSVInterpreter oftype CSVInterpreter {
+        delimiter: ';'; 
+    }
+
+    block TreesTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "lfd_nr" oftype integer,
+
+            // validate custom type for "Vogelsang"
+            "stadtteil" oftype vogelsangInit, 
+
+            "standort" oftype text,
+            "baumart_botanisch" oftype text,
+
+            // validating coord. with custom type
+            "id" oftype coordinate, 
+            "baumfamilie" oftype text
+        ];
+    }
+
+    block TreesLoader oftype SQLiteLoader {
+        table: "trees";
+
+        //sqlite file to write to
+        file: "./trees.sqlite"; 
+    }
+}
