@@ -1,0 +1,101 @@
+pipeline EconomyPipline {
+
+    EconomyExtractor
+        -> EconomyXLSXInterpreter
+        -> EconomySheetpicker
+        -> RenameCountryCode
+        -> RenameGDPAndBond
+        -> EconomyDataRange
+        -> BondTableInterpreter
+        -> BondLoader;
+    EconomyDataRange
+        -> GDPTableInterpreter
+        -> GDPLoader;
+
+
+
+
+    // Core pipeline
+
+    block EconomyExtractor oftype HttpExtractor {
+        url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
+    }
+
+    block EconomyXLSXInterpreter oftype XLSXInterpreter { }
+
+    block EconomySheetpicker oftype SheetPicker {
+        sheetName: 'Figure S5.1.2';
+    }
+
+    block RenameCountryCode oftype CellWriter {
+        at: range P2:P2;
+        write: [
+            "Country Code",
+        ];
+    }
+
+    block RenameGDPAndBond oftype CellWriter {
+        at: range R2:S2;
+        write: [
+            "GDP per Capita",
+            "Bond Issuance Share"
+        ];
+    }
+
+    block EconomyDataRange oftype CellRangeSelector {
+        select: range P2:S45;
+    }
+
+    block BondTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype ISO_3166_1,
+            "Bond Issuance Share" oftype valueBetweenZeroAndOne
+        ];
+    }
+
+    block BondLoader oftype SQLiteLoader {
+
+        table: "bondIssuance";
+        file: "country-stats.sqlite";
+    }
+
+// Gdp Table
+    block GDPTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype ISO_3166_1,
+            "GDP per Capita" oftype positiveDecimal
+        ];
+    }
+
+    block GDPLoader oftype SQLiteLoader {
+        table: "gdpPerCapita";
+        file: "country-stats.sqlite";
+    }
+
+}
+
+//Custom types
+valuetype ISO_3166_1 oftype text {
+    constraints: [
+        ISO_3166_1_Validator
+    ];
+}
+constraint ISO_3166_1_Validator oftype RegexConstraint {
+    regex: /^[A-Z]{3}$/;
+}
+
+valuetype positiveDecimal oftype decimal {
+    constraints: [
+        positiveDecimalValidator
+    ];
+}
+constraint positiveDecimalValidator on decimal: value > 0;
+
+valuetype valueBetweenZeroAndOne oftype decimal {
+    constraints: [
+        valueBetweenZeroAndOneValidator
+    ];
+}
+constraint valueBetweenZeroAndOneValidator on decimal: value >= 0 and value <= 1;
