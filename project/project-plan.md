@@ -5,8 +5,13 @@ The purpose of this project is to analyze the effects of the COVID-19 pandemic o
 
 ## 2. Data Sources
 - **Facilities.csv**: Details on individual facilities including inmate counts and COVID-19 statistics.
+https://github.com/nytimes/covid-19-data/blob/master/prisons/facilities.csv
+
 - **Systems.csv**: Aggregated COVID-19 impact data on the state correctional system level.
-- **NY Times COVID-19 Data**: Daily updates on COVID-19 cases and deaths, useful for comparative analysis with the general population.
+https://github.com/nytimes/covid-19-data/blob/master/prisons/systems.csv
+
+- **us.csv**: Daily updates on COVID-19 cases and deaths, useful for comparative analysis with the general population.
+https://github.com/nytimes/covid-19-data/blob/master/us.csv#L1
 
 ## 3. Research Questions
 - How do infection and mortality rates in correctional facilities compare to the general population?
