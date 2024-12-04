@@ -2,7 +2,8 @@
 /data/*
 !/data/.gitkeep
 data/*.csv
+# Ignore all SQLite databases
+*.sqlite
+
 
 /project/data/*
-# Ignore SQLite databases
-*.sqlite
