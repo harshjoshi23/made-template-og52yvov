@@ -1,0 +1,24 @@
+name: CI for Project Pipeline
+
+on:
+  push:
+    branches:
+      - main     #Make sure action runs on pushes to the main branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # job onlatest Ubuntu runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Execute tests
+        run: |
+          chmod +x ./project/tests.sh
+          ./project/tests.sh
