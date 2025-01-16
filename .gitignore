@@ -4,6 +4,6 @@
 data/*.csv
 # Ignore all SQLite databases
 *.sqlite
-
+*.png
 
 /project/data/*
