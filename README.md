@@ -3,7 +3,8 @@
 # Analysis of COVID-19 Case Rates in Correctional Facilities vs. State Trends
 
 ## Overview
-This project, part of the Methods of Advanced Data Engineering (MADE WS2024/25) course. It explores COVID-19 case rates among inmates and officers within correctional facilities compared to broader state trends. The study employs detailed datasets to examine internal dynamics and their implications for public health strategies.
+This project, part of the Methods of Advanced Data Engineering (MADE WS2024/25) course. It explores COVID-19 case rates among inmates and officers within correctional facilities compared to broader state trends. 
+The study uses datasets to examine internal dynamics and their implications for public health strategies.
 
 ## Repository Structure
 - `/data`: Data files used in the analysis.
