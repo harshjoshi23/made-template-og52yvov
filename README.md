@@ -28,15 +28,6 @@ The analysis involves:
 - Standardizing data to case rates per 100,000 population for consistent comparisons.
 - Using SQL for data management and Python for statistical analysis to explore correlations and trends.
 
-## Results and Analysis
-- **Correlation Matrix and Heatmap**: Analyzes relationships between different COVID-19 case rates within correctional environments and statewide.
-- **Time Series Analysis**: Examines the progression of cases over time in states most affected by the pandemic.
-- **Comparative Case Rates**: Between inmates and officers to highlight disparities and potential risk factors.
-- **Facility to State Case Ratio**: Discusses the localized nature of outbreaks and their impact relative to state trends.
-
-## Conclusions
-The findings underscore significant disparities in COVID-19 impacts within correctional facilities compared to state-wide data, highlighting the urgent need for targeted health interventions and informed public health strategies.
-
 ## How to Use
 1. Clone the repository.
 2. Navigate to the `/src` directory to run analysis scripts.
